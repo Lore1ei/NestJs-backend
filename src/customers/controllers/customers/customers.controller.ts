@@ -1,4 +1,4 @@
-import { Controller, Get, HttpException, HttpStatus, Param, ParseIntPipe, Req, Res } from "@nestjs/common";
+import { Controller, Get, HttpException, HttpStatus, Param, ParseIntPipe, Post, Req, Res } from "@nestjs/common";
 import { CustomersService } from "../../services/customers/customers.service";
 import { Request, Response } from "express";
 
@@ -28,5 +28,10 @@ export class CustomersController {
       const customer = this.customersService.findCustomerById(id);
       if(customer) return customer;
       throw new HttpException('Customer not found', HttpStatus.BAD_REQUEST)
+  }
+
+  @Post('create')
+    createCustomer(@Req() req: Request){
+      console.log(req.body)
   }
 }
