@@ -25,7 +25,6 @@ export class CustomersController {
     @Param('id', ParseIntPipe) id: number,
     @Req() req: Request,
     @Res() res: Response){
-    console.log(typeof id)
       const customer = this.customersService.findCustomerById(id);
     if(customer){
       res.send(customer)
