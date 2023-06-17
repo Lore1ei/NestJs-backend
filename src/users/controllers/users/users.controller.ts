@@ -5,11 +5,13 @@ import {
   HttpException,
   HttpStatus,
   Inject, NotFoundException,
-  Param, ParseIntPipe,
+  Param, ParseIntPipe, UseFilters,
   UseInterceptors
 } from "@nestjs/common";
 import { UsersService } from "../../services/users/users.service";
 import { SerializedUser } from "../../types";
+import { HttpExceptionFilter } from "../../filters/HttpException.filter";
+import { UserNotFoundException } from "../../exception/UserNotFound.exception";
 
 @Controller('users')
 export class UsersController {
@@ -34,13 +36,14 @@ export class UsersController {
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
+  @UseFilters(HttpExceptionFilter)
   @Get('/id/:id')
   getUsersById(@Param('id', ParseIntPipe) id: number){
     const user = this.userService.getUserById(id);
     if(user){
       return new SerializedUser(user)
     }else{
-      throw new NotFoundException()
+      throw new UserNotFoundException()
     }
   }
 }
